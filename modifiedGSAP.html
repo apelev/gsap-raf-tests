@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="module">
+
+    //Our main goal is to make sure that we get to the game state that we need regardless of whether the tab is active or not.
+    //Here we are using modified gsap where _raf is set to false in wake method.
+    //In this case if we load the page and then we switch to another tab for about 10 seconds and then switch back to this tab, the effect is that all callbacks have fired.
+    //If we do not set lagSmoothing to 0 the problem we have persists. Same goes if we have unmodified gsap.
+
+    import gsap from "./gsap/gsap-core-noraf.js";
+
+    gsap.ticker.lagSmoothing(0);
+
+    const dummyObj = {a: 0};
+
+    console.log("first",new Date().toLocaleString())
+    gsap.delayedCall(2, () => {
+        console.log("second",new Date().toLocaleString())
+        gsap.to(dummyObj, {duration:2, onComplete: () => {
+                console.log("third",new Date().toLocaleString());
+                gsap.to(dummyObj, {duration:2, onComplete: () => {
+                        console.log("4th",new Date().toLocaleString())
+                    }})
+            }})
+    });
+</script>
+
+</body>
+</html>

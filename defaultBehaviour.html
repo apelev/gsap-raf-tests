@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="module">
+    import gsap from "./gsap/gsap-core.js";
+
+    const dummyObj = {a: 0};
+    console.log("first",new Date().toLocaleString())
+    gsap.delayedCall(2, () => {
+        console.log("second",new Date().toLocaleString())
+        gsap.to(dummyObj, {duration:2, onComplete: () => {
+                console.log("third",new Date().toLocaleString());
+                gsap.to(dummyObj, {duration:2, onComplete: () => {
+                        console.log("4th",new Date().toLocaleString())
+                    }})
+            }})
+    });
+</script>
+
+</body>
+</html>
